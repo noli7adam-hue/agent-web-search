@@ -27,7 +27,7 @@ class YoucomProvider(Provider):
     def _mcp(self) -> McpClient:
         if self._client is None:
             headers = {"Authorization": f"Bearer {self.api_key}"} if self.api_key else None
-            self._client = McpClient(MCP_URL, headers=headers, timeout=40)
+            self._client = McpClient(MCP_URL, headers=headers, timeout=15)  # 10.09.2026: было 40 — эндпоинт висит, 15с быстрее уводит на фолбек
         return self._client
 
     def search(self, query: str, *, n: int = 8, freshness: Optional[str] = None) -> List[SearchResult]:

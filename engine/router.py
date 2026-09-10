@@ -12,13 +12,15 @@ from .providers import FETCH_CHAIN, SEARCH_CHAIN, FetchResult, Provider, Provide
 # Intent -> preferred provider order (benchmark bench/REPORT.md §6.1).
 # Only reorders the chain: quota skipping and fallback-down are unchanged.
 INTENT_ORDER: dict = {
-    "docs":     ["exa", "youcom", "tavily"],       # exa: only one that returns official docs
-    "research": ["exa", "youcom", "brave"],
-    "fact":     ["youcom", "exa", "brave"],        # youcom hit@3 94%
-    "news-ru":  ["tavily", "youcom", "brave"],     # tavily best, NEVER linkup first
+    # 10.09.2026: youcom (keyless MCP) убран из первых позиций во всех интентах —
+    # его эндпоинт висит ~120с (запросы таймаутили). Оставлен последним фолбеком.
+    "docs":     ["exa", "tavily", "youcom"],       # exa: only one that returns official docs
+    "research": ["exa", "brave", "youcom"],
+    "fact":     ["tavily", "exa", "youcom"],        # youcom hit@3 94% (но висит)
+    "news-ru":  ["tavily", "brave", "youcom"],     # tavily best, NEVER linkup first
     "news-en":  ["exa", "tavily", "youcom"],
-    "ru":       ["youcom", "brave", "tavily"],     # tavily pulls EN lists on RU-specific queries
-    "debug":    ["tavily", "youcom", "brave"],     # exa risky: sometimes empty on error strings
+    "ru":       ["tavily", "brave", "youcom"],     # tavily первым (youcom висел ~120с)
+    "debug":    ["tavily", "brave", "youcom"],     # exa risky: sometimes empty on error strings
 }
 
 
